@@ -1,0 +1,17 @@
+- name: Install Node and NPM
+  apt: 
+    name: ['nodejs', 'npm']
+  tags: 
+    - node
+
+- name: Install `n` (Node.js Version Manager)
+  npm:
+    name: n
+    global: yes
+  tags: 
+    - node
+
+- name: Install Node and use Node.js lts
+  shell: n lts
+  tags: 
+    - node

@@ -1,0 +1,10 @@
+- name: Cloning config-files repository
+  ansible.builtin.git:
+    repo: 'git@github.com:andres085/.dotfiles.git'
+    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    recursive: yes
+    update: yes
+    accept_hostkey: yes
+    version: main
+  tags:
+    - dotfiles

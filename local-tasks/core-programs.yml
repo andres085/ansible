@@ -1,0 +1,37 @@
+- name: Add Alacritty PPA
+  apt_repository:
+    repo: "ppa:aslatter/ppa"
+    state: present
+  tags:
+   - core-programs
+
+- name: Update package cache
+  apt:
+    update_cache: yes
+  tags:
+   - core-programs
+
+- name: Install Alacritty
+  apt:
+    name: alacritty
+    state: present
+  tags:
+   - core-programs
+
+- name: Install packages
+  become: true
+  apt:
+    name:
+      - tmux
+      - fzf
+      - gimp
+      - xclip
+      - golang
+      - i3
+      - nitrogen
+      - mesa-utils
+      - libgl1-mesa-dri
+      - libllvm15
+    update_cache: yes
+  tags:
+    - core-programs

@@ -1,0 +1,14 @@
+- name: Install Stow
+  become: true
+  apt: 
+    name: stow
+    state: present
+  tags: 
+    - stow
+
+- name: Setup stow alias on .bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: "alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'"
+  tags: 
+    - stow

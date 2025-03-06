@@ -1,0 +1,36 @@
+- name: Add Neovim PPA
+  become: true
+  apt_repository:
+    repo: "ppa:neovim-ppa/unstable"
+    state: present
+  tags:
+    - nvim
+
+- name: Update package cache
+  become: true
+  apt:
+    update_cache: yes
+  tags:
+    - nvim
+
+- name: Install Neovim
+  become: true
+  apt:
+    name: neovim
+    state: present
+  tags:
+    - nvim
+
+- name: Install LazyVim
+  ansible.builtin.git:
+    repo: "https://github.com/LazyVim/starter"
+    dest: "{{ lookup('env', 'HOME') }}/.config/nvim"
+  tags:
+    - nvim
+
+- name: Remove .git folder from LazyVim starter
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.config/nvim/.git"
+    state: absent
+  tags:
+    - nvim

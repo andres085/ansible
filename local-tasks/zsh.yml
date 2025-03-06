@@ -1,0 +1,38 @@
+- name: Install Zsh
+  apt: name=zsh
+  become: true
+  tags: 
+    - zsh
+
+- name: Change Shell
+  become: true
+  shell: chsh -s $(which zsh)
+  tags: 
+    - zsh
+
+- name: Install Ohmyszsh
+  become: true
+  become_user: andres
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  tags: 
+    - zsh
+
+- name: Install the Zsh plugin autosuggestions
+  become: true
+  become_user: andres
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+    dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+  tags: 
+    - zsh
+
+- name: Ensure autosuggestions plugin is in the plugins list
+  become: true
+  become_user: andres
+  ansible.builtin.lineinfile:
+    path: ~/.zshrc
+    regexp: '^plugins=\((.*)\)'
+    line: 'plugins=(\1 zsh-autosuggestions)'
+    backrefs: yes
+  tags: 
+    - zsh
