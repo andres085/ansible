@@ -12,15 +12,17 @@
         update_cache: true
         state: present
       tags:
-        - nvim
+        # - nvim
         # - zsh
-        # - ssh
-        # - dotfiles
-        # - stow
+          - ssh
+          - dotfiles
+          - stow
+          - core-programs
   
   tasks:
     # - include_tasks: local-tasks/zsh.yml
-    # - include_tasks: local-tasks/ssh.yml
-    # - include_tasks: local-tasks/dotfiles.yml
-    # - include_tasks: local-tasks/stow.yml
-    - include_tasks: local-tasks/nvim.yml
+    - include_tasks: local-tasks/ssh.yml
+    - include_tasks: local-tasks/dotfiles.yml
+    - include_tasks: local-tasks/core-programs.yml
+    - include_tasks: local-tasks/stow.yml
+    # - include_tasks: local-tasks/nvim.yml

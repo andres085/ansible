@@ -1,22 +1,43 @@
-- name: Add Alacritty PPA
-  apt_repository:
-    repo: "ppa:aslatter/ppa"
-    state: present
-  tags:
-   - core-programs
-
-- name: Update package cache
-  apt:
-    update_cache: yes
-  tags:
-   - core-programs
-
-- name: Install Alacritty
-  apt:
-    name: alacritty
-    state: present
-  tags:
-   - core-programs
+# - name: Ensure the /etc/apt/trusted.gpg.d directory exists
+#   file:
+#      path: /etc/apt/trusted.gpg.d
+#      state: directory
+#      mode: '0755'
+#      owner: root
+#      group: root
+#   become: true
+#
+# - name: Download the GPG key for the Alacritty PPA
+#   get_url:
+#     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3A160895CC2CE253085D08A552B24DF7D43B5377
+#     dest: /etc/apt/trusted.gpg.d/alacritty.gpg
+#     mode: '0644'
+#     owner: root
+#     group: root
+#   become: true
+#
+# - name: Add Alacritty PPA
+#   apt_repository:
+#     repo: "ppa:aslatter/ppa"
+#     state: present
+#   tags:
+#     - core-programs
+#   become: true
+#
+# - name: Update package cache
+#   apt:
+#     update_cache: yes
+#   tags:
+#    - core-programs
+#   become: true
+#
+# - name: Install Alacritty
+#   apt:
+#     name: alacritty
+#     state: present
+#   tags:
+#    - core-programs
+#   become: true
 
 - name: Install packages
   become: true
@@ -24,14 +45,20 @@
     name:
       - tmux
       - fzf
-      - gimp
-      - xclip
-      - golang
-      - i3
-      - nitrogen
-      - mesa-utils
-      - libgl1-mesa-dri
-      - libllvm15
+      # - gimp
+      # - xclip
+      # - golang
+      # - i3
+      # - nitrogen
+      # - mesa-utils
+      # - libgl1-mesa-dri
+      # - libllvm15
     update_cache: yes
   tags:
     - core-programs
+
+- name: Install tmux-plugin-manager (TPM)
+  git:
+     repo: https://github.com/tmux-plugins/tpm
+     dest: ~/.tmux/plugins/tpm
+     version: master
