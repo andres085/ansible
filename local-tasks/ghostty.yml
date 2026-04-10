@@ -1,0 +1,28 @@
+- name: Install Ghostty dependencies
+  become: true
+  apt:
+    name:
+      - curl
+    state: present
+  tags:
+    - ghostty
+
+- name: Install Ghostty via ghostty-ubuntu installer
+  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
+  args:
+    creates: /usr/bin/ghostty
+  tags:
+    - ghostty
+
+- name: Verify Ghostty installation
+  command: ghostty --version
+  register: ghostty_version
+  changed_when: false
+  tags:
+    - ghostty
+
+- name: Show Ghostty version
+  debug:
+    msg: "{{ ghostty_version.stdout }}"
+  tags:
+    - ghostty

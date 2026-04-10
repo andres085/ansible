@@ -1,0 +1,70 @@
+- name: Remove old Go installation if exists
+  become: true
+  file:
+    path: /usr/local/go
+    state: absent
+  tags:
+    - go
+
+- name: Download Go 1.26.2
+  get_url:
+    url: https://golang.org/dl/go1.26.2.linux-amd64.tar.gz
+    dest: /tmp/go1.26.2.linux-amd64.tar.gz
+    checksum: sha256:2e91ebb6947a96e9436fb2b3926a8802efe63a6d375dffec4f82aa9dbd6fd43b
+  tags:
+    - go
+
+- name: Extract Go tarball
+  become: true
+  unarchive:
+    src: /tmp/go1.26.2.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  tags:
+    - go
+
+- name: Add Go to PATH in .bashrc
+  lineinfile:
+    path: ~/.bashrc
+    line: "export PATH=$PATH:/usr/local/go/bin"
+    state: present
+  tags:
+    - go
+
+- name: Add Go to PATH in .zshrc
+  lineinfile:
+    path: ~/.zshrc
+    line: "export PATH=$PATH:/usr/local/go/bin"
+    create: yes
+    state: present
+  tags:
+    - go
+
+- name: Add GOPATH bin to PATH in .bashrc
+  lineinfile:
+    path: ~/.bashrc
+    line: "export PATH=$PATH:$HOME/go/bin"
+    state: present
+  tags:
+    - go
+
+- name: Add GOPATH bin to PATH in .zshrc
+  lineinfile:
+    path: ~/.zshrc
+    line: "export PATH=$PATH:$HOME/go/bin"
+    state: present
+  tags:
+    - go
+
+- name: Verify Go installation
+  shell: /usr/local/go/bin/go version
+  register: go_version
+  changed_when: false
+  tags:
+    - go
+
+- name: Show Go version
+  debug:
+    msg: "{{ go_version.stdout }}"
+  tags:
+    - go
