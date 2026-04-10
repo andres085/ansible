@@ -12,17 +12,23 @@
         update_cache: true
         state: present
       tags:
-        # - nvim
-        # - zsh
+          - nvim
+          - zsh
           - ssh
           - dotfiles
           - stow
           - core-programs
+          - docker
+          - ghostty
+          - go
   
   tasks:
-    # - include_tasks: local-tasks/zsh.yml
+    - include_tasks: local-tasks/zsh.yml
     - include_tasks: local-tasks/ssh.yml
     - include_tasks: local-tasks/dotfiles.yml
     - include_tasks: local-tasks/core-programs.yml
     - include_tasks: local-tasks/stow.yml
-    # - include_tasks: local-tasks/nvim.yml
+    - include_tasks: local-tasks/ghostty.yml
+    - include_tasks: local-tasks/docker.yml
+    - include_tasks: local-tasks/nvim.yml
+    - include_tasks: local-tasks/go.yml
