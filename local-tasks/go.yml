@@ -10,7 +10,7 @@
   get_url:
     url: https://golang.org/dl/go1.26.2.linux-amd64.tar.gz
     dest: /tmp/go1.26.2.linux-amd64.tar.gz
-    checksum: sha256:2e91ebb6947a96e9436fb2b3926a8802efe63a6d375dffec4f82aa9dbd6fd43b
+    checksum: sha256:990e6b4bbba816dc3ee129eaeaf4b42f17c2800b88a2166c265ac1a200262282
   tags:
     - go
 

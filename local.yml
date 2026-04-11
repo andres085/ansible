@@ -1,8 +1,10 @@
 - hosts: localhost
   vars:
-    ssh_key_name: "{{ lookup('env', 'SSH_KEY_NAME', default='id_ed25519') }}"
-    source_key: "/usr/local/bin/.ssh/{{ ssh_key_name }}"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/{{ ssh_key_name }}"
+    ssh_keys:
+      - id_ed25519_personal
+      - id_ed25519_work
+    ssh_source_dir: "/usr/local/bin/.ssh"
+    ssh_dest_dir: "{{ lookup('env', 'HOME') }}/.ssh"
   
   pre_tasks:
     - name: Update cache
@@ -21,14 +23,18 @@
           - docker
           - ghostty
           - go
-  
+          - node
+          - floorp
+
   tasks:
-    - include_tasks: local-tasks/zsh.yml
-    - include_tasks: local-tasks/ssh.yml
-    - include_tasks: local-tasks/dotfiles.yml
-    - include_tasks: local-tasks/core-programs.yml
-    - include_tasks: local-tasks/stow.yml
-    - include_tasks: local-tasks/ghostty.yml
-    - include_tasks: local-tasks/docker.yml
-    - include_tasks: local-tasks/nvim.yml
-    - include_tasks: local-tasks/go.yml
+    - import_tasks: local-tasks/ssh.yml
+    - import_tasks: local-tasks/zsh.yml
+    - import_tasks: local-tasks/dotfiles.yml
+    - import_tasks: local-tasks/core-programs.yml
+    - import_tasks: local-tasks/stow.yml
+    - import_tasks: local-tasks/nvim.yml
+    - import_tasks: local-tasks/go.yml
+    - import_tasks: local-tasks/node.yml
+    - import_tasks: local-tasks/docker.yml
+    - import_tasks: local-tasks/ghostty.yml
+    - import_tasks: local-tasks/floorp-install.yml

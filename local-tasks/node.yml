@@ -1,17 +1,20 @@
 - name: Install Node and NPM
-  apt: 
+  become: true
+  apt:
     name: ['nodejs', 'npm']
-  tags: 
+  tags:
     - node
 
 - name: Install `n` (Node.js Version Manager)
+  become: true
   npm:
     name: n
     global: yes
-  tags: 
+  tags:
     - node
 
 - name: Install Node and use Node.js lts
+  become: true
   shell: n lts
-  tags: 
+  tags:
     - node

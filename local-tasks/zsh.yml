@@ -12,27 +12,40 @@
 
 - name: Install Ohmyszsh
   become: true
-  become_user: andres
+  become_user: "{{ lookup('env', 'USER') }}"
+  environment:
+    RUNZSH: "no"
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  tags: 
+  tags:
+    - zsh
+
+- name: Install Powerlevel10k theme
+  become: true
+  become_user: "{{ lookup('env', 'USER') }}"
+  ansible.builtin.git:
+    repo: 'https://github.com/romkatv/powerlevel10k.git'
+    dest: "~/.oh-my-zsh/custom/themes/powerlevel10k"
+    depth: 1
+  tags:
     - zsh
 
 - name: Install the Zsh plugin autosuggestions
   become: true
-  become_user: andres
+  become_user: "{{ lookup('env', 'USER') }}"
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
-  tags: 
+    depth: 1
+  tags:
     - zsh
 
 - name: Ensure autosuggestions plugin is in the plugins list
   become: true
-  become_user: andres
+  become_user: "{{ lookup('env', 'USER') }}"
   ansible.builtin.lineinfile:
     path: ~/.zshrc
     regexp: '^plugins=\((.*)\)'
     line: 'plugins=(\1 zsh-autosuggestions)'
     backrefs: yes
-  tags: 
+  tags:
     - zsh

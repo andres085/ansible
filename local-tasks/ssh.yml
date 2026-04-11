@@ -1,31 +1,42 @@
 - name: Ensure .ssh directory exists
   file:
-    dest: "{{ dest_key | dirname }}"
+    path: "{{ ssh_dest_dir }}"
     mode: 0700
     state: directory
   tags:
     - ssh
 
-- name: Install SSH private key
+- name: Install SSH private keys
   copy:
-    src: "{{ source_key }}"
-    dest: "{{ dest_key }}"
+    src: "{{ ssh_source_dir }}/{{ item }}"
+    dest: "{{ ssh_dest_dir }}/{{ item }}"
+    mode: 0600
+  loop: "{{ ssh_keys }}"
+  tags:
+    - ssh
+
+- name: Install SSH public keys
+  copy:
+    src: "{{ ssh_source_dir }}/{{ item }}.pub"
+    dest: "{{ ssh_dest_dir }}/{{ item }}.pub"
+    mode: 0644
+  loop: "{{ ssh_keys }}"
+  tags:
+    - ssh
+
+- name: Copy SSH config
+  copy:
+    src: "{{ ssh_source_dir }}/config"
+    dest: "{{ ssh_dest_dir }}/config"
     mode: 0600
   tags:
     - ssh
 
-- name: Install SSH public key
-  copy:
-    src: "{{ source_key }}.pub"
-    dest: "{{ dest_key }}.pub"
-    mode: 0644
-  tags:
-    - ssh
-
-- name: Set authorized key from file
+- name: Set authorized keys
   authorized_key:
     user: "{{ lookup('env', 'USER') }}"
     state: present
-    key: "{{ lookup('file', dest_key + '.pub') }}"
+    key: "{{ lookup('file', ssh_dest_dir + '/' + item + '.pub') }}"
+  loop: "{{ ssh_keys }}"
   tags:
     - ssh

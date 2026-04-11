@@ -10,5 +10,19 @@
   ansible.builtin.lineinfile:
     path: ~/.bashrc
     line: "alias stow='sudo STOW_DIR=/usr/local/stow /usr/bin/stow'"
-  tags: 
+  tags:
+    - stow
+
+- name: Remove conflicting dotfiles created by installers
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ lookup('env', 'HOME') }}/.zshrc"
+  tags:
+    - stow
+
+- name: Stow dotfiles
+  shell: cd $HOME/.dotfiles && for d in */; do stow "${d%/}"; done
+  tags:
     - stow

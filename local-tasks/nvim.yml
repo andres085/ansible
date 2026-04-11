@@ -21,16 +21,3 @@
   tags:
     - nvim
 
-- name: Install LazyVim
-  ansible.builtin.git:
-    repo: "https://github.com/LazyVim/starter"
-    dest: "{{ lookup('env', 'HOME') }}/.config/nvim"
-  tags:
-    - nvim
-
-- name: Remove .git folder from LazyVim starter
-  file:
-    path: "{{ lookup('env', 'HOME') }}/.config/nvim/.git"
-    state: absent
-  tags:
-    - nvim
