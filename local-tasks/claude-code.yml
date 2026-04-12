@@ -1,0 +1,15 @@
+- name: Install Claude Code (native installer)
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://claude.ai/install.sh | bash
+    creates: "{{ lookup('env', 'HOME') }}/.local/bin/claude"
+  tags:
+    - claude-code
+
+- name: Add ~/.local/bin to PATH in .zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.zshrc"
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    regexp: '^export PATH="\$HOME/.local/bin'
+    state: present
+  tags:
+    - claude-code

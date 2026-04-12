@@ -1,3 +1,14 @@
+- name: Add universe repository
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - "universe"
+    - "ppa:agornostal/ulauncher"
+  tags:
+    - core-programs
+
 - name: Install packages
   become: true
   apt:
@@ -10,6 +21,7 @@
       - nitrogen
       - libgl1-mesa-dri
       - mesa-vulkan-drivers
+      - ulauncher
     update_cache: yes
   tags:
     - core-programs

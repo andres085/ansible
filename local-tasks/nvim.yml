@@ -1,23 +1,38 @@
-- name: Add Neovim PPA
-  become: true
-  apt_repository:
-    repo: "ppa:neovim-ppa/unstable"
-    state: present
+- name: Download Neovim AppImage
+  get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    dest: /tmp/nvim-linux-x86_64.tar.gz
   tags:
     - nvim
 
-- name: Update package cache
+- name: Extract Neovim
   become: true
-  apt:
-    update_cache: yes
+  unarchive:
+    src: /tmp/nvim-linux-x86_64.tar.gz
+    dest: /opt/
+    remote_src: yes
   tags:
     - nvim
 
-- name: Install Neovim
+- name: Create Neovim symlink
   become: true
-  apt:
-    name: neovim
-    state: present
+  file:
+    src: /opt/nvim-linux-x86_64/bin/nvim
+    dest: /usr/local/bin/nvim
+    state: link
+  tags:
+    - nvim
+
+- name: Verify Neovim installation
+  command: nvim --version
+  register: nvim_version
+  changed_when: false
+  tags:
+    - nvim
+
+- name: Show Neovim version
+  debug:
+    msg: "{{ nvim_version.stdout_lines[0] }}"
   tags:
     - nvim
 

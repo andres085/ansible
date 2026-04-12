@@ -1,0 +1,32 @@
+- name: Add Spotify GPG key
+  become: true
+  shell: |
+    curl -sS https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+  args:
+    creates: /etc/apt/trusted.gpg.d/spotify.gpg
+  tags:
+    - spotify
+
+- name: Add Spotify repository
+  become: true
+  shell: |
+    echo "deb https://repository.spotify.com stable non-free" | tee /etc/apt/sources.list.d/spotify.list
+  args:
+    creates: /etc/apt/sources.list.d/spotify.list
+  tags:
+    - spotify
+
+- name: Update apt cache after adding Spotify repository
+  become: true
+  apt:
+    update_cache: yes
+  tags:
+    - spotify
+
+- name: Install Spotify
+  become: true
+  apt:
+    name: spotify-client
+    state: present
+  tags:
+    - spotify

@@ -1,20 +1,32 @@
 - name: Add Floorp GPG key
+  become: true
   shell: |
     curl -fsSL https://ppa.floorp.app/KEY.gpg | gpg --dearmor -o /usr/share/keyrings/Floorp.gpg
   args:
     creates: /usr/share/keyrings/Floorp.gpg
+  tags:
+    - floorp
 
 - name: Add Floorp repository list file
+  become: true
   get_url:
     url: "https://ppa.floorp.app/Floorp.list"
     dest: /etc/apt/sources.list.d/Floorp.list
     mode: '0644'
+  tags:
+    - floorp
 
 - name: Update apt cache after adding Floorp repository
+  become: true
   apt:
     update_cache: yes
+  tags:
+    - floorp
 
 - name: Install Floorp browser
+  become: true
   apt:
     name: floorp
     state: present
+  tags:
+    - floorp
