@@ -1,0 +1,15 @@
+- name: Download Obsidian .deb package
+  get_url:
+    url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/obsidian_1.12.7_amd64.deb"
+    dest: "/tmp/obsidian_1.12.7_amd64.deb"
+    mode: '0644'
+  tags:
+    - obsidian
+
+- name: Install Obsidian from .deb package
+  become: true
+  apt:
+    deb: "/tmp/obsidian_1.12.7_amd64.deb"
+    state: present
+  tags:
+    - obsidian

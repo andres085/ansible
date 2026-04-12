@@ -28,6 +28,8 @@
           - floorp
           - claude-code
           - spotify
+          - slack
+          - obsidian
 
   tasks:
     - import_tasks: local-tasks/ssh.yml
@@ -43,3 +45,5 @@
     - import_tasks: local-tasks/floorp-install.yml
     - import_tasks: local-tasks/claude-code.yml
     - import_tasks: local-tasks/spotify.yml
+    - import_tasks: local-tasks/slack.yml
+    - import_tasks: local-tasks/obsidian.yml
